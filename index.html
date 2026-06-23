@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Siddharth Rapolu — Software Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400&family=Newsreader:ital,opsz@0,6..72;1,6..72&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f6f4ef;
+        --ink: #14130f;
+        --muted: #6b675d;
+        --faint: #a8a294;
+        --line: #ddd8cc;
+        --accent: #b5470f;
+        --paper: #fbfaf6;
+        --max: 1080px;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Newsreader", Georgia, serif;
+        font-size: 18px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+      /* subtle paper grain */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 9999;
+        mix-blend-mode: multiply;
+      }
+
+      .wrap {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 0 32px;
+      }
+
+      /* ── NAV ── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 22px 40px;
+        z-index: 100;
+        color: var(--ink);
+      }
+      nav .name {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 13px;
+        letter-spacing: 0.04em;
+      }
+      nav .links {
+        display: flex;
+        gap: 28px;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 0.05em;
+      }
+      nav a {
+        color: inherit;
+        text-decoration: none;
+        opacity: 0.8;
+        transition: opacity 0.3s;
+      }
+      nav a:hover {
+        opacity: 1;
+      }
+
+      /* ── HERO ── */
+      header {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 32px;
+        max-width: var(--max);
+        margin: 0 auto;
+        position: relative;
+      }
+      .eyebrow {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 30px;
+        opacity: 0;
+        animation: rise 0.9s 0.1s forwards cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      h1 {
+        font-family: "Fraunces", serif;
+        font-weight: 300;
+        font-size: clamp(44px, 8.5vw, 104px);
+        line-height: 0.98;
+        letter-spacing: -0.02em;
+      }
+      h1 .l {
+        display: block;
+        opacity: 0;
+        transform: translateY(24px);
+        animation: rise 1s forwards cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      h1 .l:nth-child(1) {
+        animation-delay: 0.2s;
+      }
+      h1 .l:nth-child(2) {
+        animation-delay: 0.34s;
+      }
+      h1 em {
+        font-style: italic;
+        color: var(--accent);
+      }
+      .lede {
+        margin-top: 38px;
+        max-width: 520px;
+        font-size: 21px;
+        color: var(--muted);
+        opacity: 0;
+        animation: rise 1s 0.6s forwards cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      .hero-meta {
+        margin-top: 46px;
+        display: flex;
+        gap: 36px;
+        flex-wrap: wrap;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        color: var(--faint);
+        opacity: 0;
+        animation: rise 1s 0.8s forwards cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      .hero-meta b {
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .scroll-cue {
+        position: absolute;
+        bottom: 40px;
+        left: 32px;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        color: var(--faint);
+        opacity: 0;
+        animation: fade 1s 1.2s forwards;
+      }
+      .scroll-cue::before {
+        content: "↓ ";
+      }
+
+      @keyframes rise {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fade {
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* ── SECTION SCAFFOLD ── */
+      section {
+        padding: 120px 0;
+        border-top: 1px solid var(--line);
+      }
+      .sec-label {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--faint);
+        margin-bottom: 50px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .sec-label::before {
+        content: "";
+        width: 30px;
+        height: 1px;
+        background: var(--accent);
+      }
+
+      /* ── ABOUT ── */
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 70px;
+      }
+      .about-grid h2 {
+        font-family: "Fraunces", serif;
+        font-weight: 300;
+        font-size: clamp(28px, 4vw, 44px);
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+      }
+      .about-grid h2 em {
+        font-style: italic;
+        color: var(--accent);
+      }
+      .about-body p {
+        margin-bottom: 18px;
+        color: var(--muted);
+      }
+      .about-body p:last-child {
+        margin-bottom: 0;
+      }
+      .about-body strong {
+        color: var(--ink);
+        font-weight: 500;
+      }
+
+      /* ── PROJECTS ── */
+      .project {
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        gap: 60px;
+        padding: 64px 0;
+        border-bottom: 1px solid var(--line);
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 1s cubic-bezier(0.2, 0.7, 0.2, 1),
+          transform 1s cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      .project.in {
+        opacity: 1;
+        transform: none;
+      }
+      .project:first-of-type {
+        border-top: 1px solid var(--line);
+      }
+      .p-index {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        color: var(--accent);
+        letter-spacing: 0.1em;
+      }
+      .p-name {
+        font-family: "Fraunces", serif;
+        font-weight: 300;
+        font-size: clamp(34px, 5vw, 56px);
+        line-height: 1;
+        letter-spacing: -0.02em;
+        margin: 14px 0 10px;
+      }
+      .p-tag {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 26px;
+      }
+      .p-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .p-stack span {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        padding: 5px 11px;
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        color: var(--muted);
+        background: var(--paper);
+      }
+      .p-body {
+        padding-top: 6px;
+      }
+      .p-body > p {
+        color: var(--muted);
+        margin-bottom: 26px;
+      }
+      .p-body > p strong {
+        color: var(--ink);
+        font-weight: 500;
+      }
+      .results {
+        list-style: none;
+      }
+      .results li {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 18px;
+        align-items: baseline;
+        padding: 16px 0;
+        border-top: 1px dotted var(--line);
+      }
+      .results .num {
+        font-family: "Fraunces", serif;
+        font-weight: 400;
+        font-size: 32px;
+        color: var(--accent);
+        line-height: 1;
+        white-space: nowrap;
+      }
+      .results .desc {
+        font-size: 16px;
+        color: var(--muted);
+      }
+      .pending {
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        gap: 60px;
+        padding: 64px 0;
+        border-bottom: 1px solid var(--line);
+        opacity: 0.55;
+      }
+      .pending .p-name {
+        color: var(--faint);
+      }
+      .pending-note {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 13px;
+        color: var(--faint);
+        border: 1px dashed var(--line);
+        border-radius: 8px;
+        padding: 20px 22px;
+      }
+
+      /* ── CONTACT ── */
+      .contact {
+        text-align: center;
+      }
+      .contact h2 {
+        font-family: "Fraunces", serif;
+        font-weight: 300;
+        font-size: clamp(40px, 7vw, 84px);
+        line-height: 1;
+        letter-spacing: -0.02em;
+        margin-bottom: 16px;
+      }
+      .contact h2 em {
+        font-style: italic;
+        color: var(--accent);
+      }
+      .contact p {
+        color: var(--muted);
+        margin-bottom: 44px;
+      }
+      .contact-links {
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .contact-links a {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 13px;
+        letter-spacing: 0.03em;
+        text-decoration: none;
+        color: var(--ink);
+        padding: 14px 26px;
+        border: 1px solid var(--ink);
+        border-radius: 40px;
+        transition: all 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      .contact-links a:hover {
+        background: var(--ink);
+        color: var(--bg);
+        transform: translateY(-2px);
+      }
+
+      footer {
+        padding: 40px 0 60px;
+        text-align: center;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 11px;
+        color: var(--faint);
+        letter-spacing: 0.05em;
+      }
+
+      @media (max-width: 760px) {
+        nav {
+          padding: 18px 24px;
+        }
+        nav .links {
+          gap: 16px;
+        }
+        .about-grid,
+        .project,
+        .pending {
+          grid-template-columns: 1fr;
+          gap: 28px;
+        }
+        .wrap {
+          padding: 0 24px;
+        }
+        header {
+          padding: 0 24px;
+        }
+        section {
+          padding: 80px 0;
+        }
+        .repos-head {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 14px;
+        }
+      }
+
+      /* ── GITHUB STRIP ── */
+      .repos-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+      .repo-count {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        color: var(--faint);
+        letter-spacing: 0.04em;
+      }
+      .repo-sort {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .repo-sort select {
+        font-family: inherit;
+        font-size: 12px;
+        padding: 6px 10px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: var(--paper);
+        color: var(--ink);
+        cursor: pointer;
+      }
+      .repo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+      }
+      .repo-card {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 26px 26px 22px;
+        background: var(--paper);
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+          border-color 0.35s,
+          opacity 0.5s;
+      }
+      .repo-card.in {
+        opacity: 1;
+        transform: none;
+      }
+      .repo-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--accent);
+      }
+      .repo-card h3 {
+        font-family: "Fraunces", serif;
+        font-weight: 400;
+        font-size: 22px;
+        letter-spacing: -0.01em;
+        margin-bottom: 12px;
+      }
+      .repo-card .desc {
+        font-size: 15px;
+        color: var(--muted);
+        line-height: 1.5;
+        flex: 1;
+        margin-bottom: 18px;
+      }
+      .repo-topics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-bottom: 18px;
+      }
+      .repo-topics span {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 10px;
+        padding: 4px 9px;
+        border-radius: 20px;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        color: var(--muted);
+      }
+      .repo-foot {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 12px;
+        color: var(--muted);
+        padding-top: 16px;
+        border-top: 1px dotted var(--line);
+      }
+      .lang-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 6px;
+        vertical-align: middle;
+      }
+      .repo-link {
+        margin-left: auto;
+        text-decoration: none;
+        color: var(--ink);
+        border-bottom: 1px solid var(--accent);
+        padding-bottom: 1px;
+        transition: color 0.3s;
+      }
+      .repo-link:hover {
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <span class="name">SID RAPOLU</span>
+      <div class="links">
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <header>
+      <div class="eyebrow">Software Engineer · Payments Infrastructure</div>
+      <h1>
+        <span class="l">Siddharth Rapolu</span>
+        <span class="l">builds systems that <em>scale</em>.</span>
+      </h1>
+      <p class="lede">
+        Engineer on Capital One's Payment Wires team, working in the rare
+        overlap of SWIFT / ISO 20022 payment rails and AI-powered developer
+        tooling.
+      </p>
+      <div class="hero-meta">
+        <span><b>2.5 yrs</b> production engineering</span>
+        <span><b>SWIFT / ISO 20022</b> wire infrastructure</span>
+        <span><b>Go · Python · TypeScript</b></span>
+      </div>
+      <div class="scroll-cue">Scroll</div>
+    </header>
+
+    <div class="wrap">
+      <!-- GITHUB STRIP -->
+      <section id="repos">
+        <div class="sec-label">My Projects</div>
+        <div class="repos-head">
+          <span id="repo-count" class="repo-count">Loading repositories…</span>
+          <label class="repo-sort"
+            >Sort by
+            <select id="repo-sort">
+              <option value="recent">Recently Pushed</option>
+              <option value="stars">Most Stars</option>
+              <option value="name">Name</option>
+            </select>
+          </label>
+        </div>
+        <div id="repo-grid" class="repo-grid"></div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about">
+        <div class="sec-label">About</div>
+        <div class="about-grid">
+          <h2>
+            An engineer with a <em>builder's</em> instinct and a
+            <em>storyteller's</em> eye.
+          </h2>
+          <div class="about-body">
+            <p>
+              I'm a software engineer on
+              <strong>Capital One's Payment Wires team</strong>, building the
+              infrastructure that moves money across SWIFT and ISO 20022 rails —
+              ingestion paths, message processing, and the feature work that
+              keeps wire payments flowing reliably.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact">
+        <div class="contact">
+          <h2>Let's build something <em>real</em>.</h2>
+          <div class="contact-links">
+            <a href="mailto:hello@example.com">Email</a>
+            <a href="#" target="_blank">LinkedIn</a>
+            <a
+              href="https://github.com/SidRapolu"
+              target="_blank"
+              rel="noopener"
+              >GitHub</a
+            >
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>© 2026 Siddharth Rapolu · Designed & built from scratch</footer>
+
+    <script>
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("in");
+          });
+        },
+        { threshold: 0.15 },
+      );
+      document.querySelectorAll(".project").forEach((el) => io.observe(el));
+
+      // ── github strip ──
+      const GH_USER = "SidRapolu";
+      const PINNED = ["Drift", "Stack", "Tracer"]; // reverse display order; pushed to front
+      const langColors = {
+        JavaScript: "#f1e05a",
+        TypeScript: "#3178c6",
+        Python: "#3572A5",
+        Go: "#00ADD8",
+        C: "#555",
+        "C++": "#f34b7d",
+        Rust: "#dea584",
+        "Jupyter Notebook": "#DA5B0B",
+        HTML: "#e34c26",
+        Shell: "#89e051",
+      };
+      let repos = [];
+
+      async function loadRepos() {
+        try {
+          const res = await fetch(
+            `https://api.github.com/users/${GH_USER}/repos?per_page=100`,
+            {
+              headers: { Accept: "application/vnd.github+json" },
+            },
+          );
+          if (!res.ok) throw new Error(res.status);
+          const data = await res.json();
+          repos = data.filter((r) => !r.fork && !r.archived);
+          document.getElementById("repo-count").textContent =
+            `${repos.length} ${repos.length === 1 ? "repository" : "repositories"}`;
+          renderRepos();
+        } catch (e) {
+          document.getElementById("repo-count").textContent =
+            "Couldn't load repositories right now.";
+        }
+      }
+
+      function sortRepos(mode) {
+        const pinFirst = (a, b) =>
+          PINNED.indexOf(b.name) - PINNED.indexOf(a.name);
+        const sorters = {
+          stars: (a, b) => b.stargazers_count - a.stargazers_count,
+          recent: (a, b) => new Date(b.pushed_at) - new Date(a.pushed_at),
+          name: (a, b) => a.name.localeCompare(b.name),
+        };
+        return [...repos].sort(sorters[mode]).sort(pinFirst);
+      }
+
+      function renderRepos() {
+        const mode = document.getElementById("repo-sort").value;
+        const grid = document.getElementById("repo-grid");
+        grid.innerHTML = sortRepos(mode)
+          .map(
+            (r) => `
+      <article class="repo-card">
+        <h3>${r.name}</h3>
+        <p class="desc">${r.description || "No description provided."}</p>
+        ${
+          r.topics && r.topics.length
+            ? `<div class="repo-topics">${r.topics
+                .slice(0, 4)
+                .map((t) => `<span>${t}</span>`)
+                .join("")}</div>`
+            : ""
+        }
+        <div class="repo-foot">
+          ${r.language ? `<span><i class="lang-dot" style="background:${langColors[r.language] || "#999"}"></i>${r.language}</span>` : ""}
+          <span>★ ${r.stargazers_count}</span>
+          <a class="repo-link" href="${r.html_url}" target="_blank" rel="noopener">View →</a>
+        </div>
+      </article>`,
+          )
+          .join("");
+        requestAnimationFrame(() => {
+          document.querySelectorAll(".repo-card").forEach((el, i) => {
+            setTimeout(() => el.classList.add("in"), i * 60);
+          });
+        });
+      }
+
+      document
+        .getElementById("repo-sort")
+        .addEventListener("change", renderRepos);
+      loadRepos();
+    </script>
+  </body>
+</html>
