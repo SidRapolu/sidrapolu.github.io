@@ -643,6 +643,7 @@
       // ── github strip ──
       const GH_USER = "SidRapolu";
       const PINNED = ["Drift", "Stack", "Tracer"]; // reverse display order; pushed to front
+      const EXCLUDE = ["sidrapolu.github.io", "choreo-coach", "pirk"];
       const langColors = {
         JavaScript: "#f1e05a",
         TypeScript: "#3178c6",
@@ -667,7 +668,9 @@
           );
           if (!res.ok) throw new Error(res.status);
           const data = await res.json();
-          repos = data.filter((r) => !r.fork && !r.archived);
+          repos = data.filter(
+            (r) => !r.fork && !r.archived && !EXCLUDE.includes(r.name),
+          );
           document.getElementById("repo-count").textContent =
             `${repos.length} ${repos.length === 1 ? "repository" : "repositories"}`;
           renderRepos();
